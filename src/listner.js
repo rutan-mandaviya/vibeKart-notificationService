@@ -54,7 +54,7 @@ module.exports = function () {
     await sendEmail(
       data.email,
       "New Product Listed",
-      emailtemplate
+      emailtemplate,
       `A new product has been listed on VibeKart: ${data.title}`,
     );
   });
