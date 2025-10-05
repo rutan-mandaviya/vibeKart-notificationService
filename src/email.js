@@ -1,22 +1,40 @@
-// resendEmail.service.js
-const {Resend} = require("resend");
+// src/email.js
+const nodemailer = require('nodemailer');
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Create transporter
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465, // SSL port
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: process.env.EMAIL_USER, // tumhara gmail
+    pass: process.env.EMAIL_PASS, // Gmail App Password
+  },
+});
 
-// Function to send email via Resend
-const sendEmail = async (to, subject, html, text = "") => {
+// Verify connection configuration
+transporter.verify((error, success) => {
+  if (error) {
+    console.error("Error connecting to email server:", error);
+  } else {
+    console.log("Email server is ready to send messages");
+  }
+});
+
+// Function to send email
+const sendEmail = async (to, subject, text, html) => {
   try {
-    const response = await resend.emails.send({
-      from: `VibeKart <${process.env.EMAIL_USER}>`, // apna verified sender email
+    const info = await transporter.sendMail({
+      from: `"VibeKart" <${process.env.EMAIL_USER}>`,
       to,
       subject,
-      html,
       text,
+      html,
     });
 
-    console.log("Email sent via Resend:", response);
+    console.log("Message sent:", info.messageId);
   } catch (error) {
-    console.error("Error sending email via Resend:", error);
+    console.error("Error sending email:", error);
   }
 };
 
