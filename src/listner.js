@@ -14,8 +14,8 @@ module.exports = function () {
     await sendEmail(
       data.email,
       "Welcome to VibeKart",
-      emailtemplate,
       "Thank you for registering at VibeKart. We're excited to have you on board!",
+      emailtemplate
     );
   });
   subscribeToQueue("Payment_Notification_order_initiated", async (data) => {
@@ -31,12 +31,12 @@ module.exports = function () {
     await sendEmail(
       data.email,
       "Payment Initiated",
-      emailtemplate
       `Your payment for order ID: ${
         data.orderId
       } has been initiated. Amount: ${(data.amount / 100).toFixed(2)} ${
         data.currency
       }`,
+      emailtemplate
     );
   });
 
@@ -54,8 +54,8 @@ module.exports = function () {
     await sendEmail(
       data.email,
       "New Product Listed",
-      emailtemplate,
       `A new product has been listed on VibeKart: ${data.title}`,
+      emailtemplate
     );
   });
   subscribeToQueue("Payment_order_created", async (data) => {
@@ -75,12 +75,12 @@ module.exports = function () {
     await sendEmail(
       data.email,
       "Payment Successful",
-      emailtemplate,
       `Your payment for order ID: ${
         data.orderId
       } has been successfully processed. Payment ID: ${
         data.paymentId
       }, Amount: ${(data.amount / 100).toFixed(2)} ${data.currency}`,
+      emailtemplate
     );
   });
 
@@ -95,8 +95,8 @@ module.exports = function () {
     await sendEmail(
       data.email,
       "Payment Failed",
-      emailtemplate,
       `Unfortunately, your payment for order ID: ${data.orderId} could not be processed. Please try again or contact support if the issue persists.`,
+      emailtemplate
     );
   });
 };
