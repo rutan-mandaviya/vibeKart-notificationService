@@ -1,45 +1,23 @@
+// resendEmail.service.js
+const {Resend} = require("resend");
 
-const nodemailer = require('nodemailer');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    type: 'OAuth2',
-    user: process.env.EMAIL_USER,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.REFRESH_TOKEN,
-  },
-});
-
-// Verify the connection configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('Error connecting to email server:', error);
-  } else {
-    console.log('Email server is ready to send messages');
-  }
-});
-
-// Function to send email
-const sendEmail = async (to, subject, text, html) => {
+// Function to send email via Resend
+const sendEmail = async (to, subject, html, text = "") => {
   try {
-    const info = await transporter.sendMail({
-      from: `"VibeKart" <${process.env.EMAIL_USER}>`, // sender address
-      to, // list of receivers
-      subject, // Subject line
-      text, // plain text body
-      html, // html body
-
+    const response = await resend.emails.send({
+      from: `"VibeKart <${process.env.EMAIL_USER}>"`, // apna verified sender email
+      to,
+      subject,
+      html,
+      text,
     });
 
-    console.log('Message sent: %s', info.messageId);
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    console.log("Email sent via Resend:", response);
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error("Error sending email via Resend:", error);
   }
 };
 
-
 module.exports = sendEmail;
-
