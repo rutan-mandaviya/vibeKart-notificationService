@@ -1,13 +1,11 @@
 const nodemailer = require('nodemailer');
 
-// Gmail credentials
+// SMTP2GO credentials
 const transporter = nodemailer.createTransport({
-    host: 'gmail', // SMTP2GO server
-    port: 587,                 // TLS port
-    secure: false,             // true for 465, false for 587
+  service: 'gmail', // true for 465, false for 587
     auth: {
-        user: process.env.SMTP2GO_USER, // SMTP2GO username
-        pass: process.env.SMTP2GO_PASS  // SMTP2GO password
+        user: process.env.EMAIL_USER, // SMTP2GO username
+        pass: process.env.EMAIL_PASS  // SMTP2GO password
     }
 });
 
@@ -16,7 +14,7 @@ transporter.verify((error, success) => {
     if (error) {
         console.error('Error connecting to SMTP2GO:', error);
     } else {
-        console.log('SMTP2GO server ready to send emails');
+        console.log('gmail server ready to send emails');
     }
 });
 
@@ -24,7 +22,7 @@ transporter.verify((error, success) => {
 const sendEmail = async (to, subject, text, html) => {
     try {
         const info = await transporter.sendMail({
-            from: `"VibeKart" <${process.env.SMTP2GO_USER}>`,
+            from: `"VibeKart" <${process.env.EMAIL_USER}>`,
             to,
             subject,
             text,
