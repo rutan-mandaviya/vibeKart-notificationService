@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 
-// SMTP2GO credentials
+// Gmail credentials
 const transporter = nodemailer.createTransport({
-    host: 'mail.smtp2go.com', // SMTP2GO server
+    host: 'gmail', // SMTP2GO server
     port: 587,                 // TLS port
     secure: false,             // true for 465, false for 587
     auth: {
